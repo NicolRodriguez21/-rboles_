@@ -1,0 +1,78 @@
+#Árboles con listas enlazadas
+#Nicol Alexa Rodríguez Alfonso, 2240071
+#Hector Alirio Valdeleon Millan, 2230063
+
+class NodoArbol:
+    def __init__(self, dato):
+        self.dato = dato
+        self.hijo_izq = None
+        self.hijo_der = None
+
+class Arbol:
+    def __init__(self):
+        self.nodo_raiz = None
+
+    def agregar(self, dato):
+        nuevo_nodo = NodoArbol(dato)
+        if self.nodo_raiz is None:
+            self.nodo_raiz = nuevo_nodo
+        else:
+            self._agregar_recursivo(self.nodo_raiz, nuevo_nodo)
+
+    def _agregar_recursivo(self, nodo_actual, nuevo_nodo):
+        direccion = input(f"¿Dónde insertar el nodo con valor '{nuevo_nodo.dato}' respecto a '{nodo_actual.dato}'? (i = izquierdo, d = derecho): ").strip().lower()
+        if direccion == 'i':
+            if nodo_actual.hijo_izq is None:
+                nodo_actual.hijo_izq = nuevo_nodo
+            else:
+                self._agregar_recursivo(nodo_actual.hijo_izq, nuevo_nodo)
+        elif direccion == 'd':
+            if nodo_actual.hijo_der is None:
+                nodo_actual.hijo_der = nuevo_nodo
+            else:
+                self._agregar_recursivo(nodo_actual.hijo_der, nuevo_nodo)
+        else:
+            print("Dirección inválida. Debe usar 'i' o 'd'.")
+
+    def calcular_peso(self):
+        return self._contar_nodos(self.nodo_raiz)
+
+    def _contar_nodos(self, nodo):
+        if nodo is None:
+            return 0
+        return 1 + self._contar_nodos(nodo.hijo_izq) + self._contar_nodos(nodo.hijo_der)
+
+    def calcular_orden(self):
+        return self._obtener_orden(self.nodo_raiz)
+
+    def _obtener_orden(self, nodo):
+        if nodo is None:
+            return 0
+        hijos = 0
+        if nodo.hijo_izq:
+            hijos += 1
+        if nodo.hijo_der:
+            hijos += 1
+        return max(hijos, self._obtener_orden(nodo.hijo_izq), self._obtener_orden(nodo.hijo_der))
+
+    def calcular_altura(self):
+        return self._obtener_altura(self.nodo_raiz)
+
+    def _obtener_altura(self, nodo):
+        if nodo is None:
+            return -1
+        altura_izquierda = self._obtener_altura(nodo.hijo_izq)
+        altura_derecha = self._obtener_altura(nodo.hijo_der)
+        return 1 + max(altura_izquierda, altura_derecha)
+
+
+if __name__ == "__main__":
+    mi_arbol = Arbol()
+    cantidad_nodos = int(input("¿Cuántos nodos desea usted ingresar?: "))
+    for _ in range(cantidad_nodos):
+        dato_nodo = input("Ingresar el valor del nodo: ")
+        mi_arbol.agregar(dato_nodo)
+
+    print(f"\nPeso del árbol (número total de nodos): {mi_arbol.calcular_peso()}")
+    print(f"Orden del árbol (máximo número de hijos de un nodo): {mi_arbol.calcular_orden()}")
+    print(f"Altura del árbol: {mi_arbol.calcular_altura()}")
