@@ -1,0 +1,19 @@
+from bigtree import Node, print_tree
+
+# Crear nodos
+ceo = Node("CEO")
+
+# Niveles inferiores
+gerente_tecnologia = Node("Gerente de Tecnología", parent=ceo)
+gerente_finanzas = Node("Gerente de Finanzas", parent=ceo)
+gerente_marketing = Node("Gerente de Marketing", parent=ceo)
+
+# Empleados bajo tecnología
+dev_backend = Node("Desarrollador Backend", parent=gerente_tecnologia)
+dev_frontend = Node("Desarrollador Frontend", parent=gerente_tecnologia)
+
+# Empleado bajo finanzas
+contador = Node("Contador", parent=gerente_finanzas)
+
+# Imprimir árbol
+print_tree(ceo)
